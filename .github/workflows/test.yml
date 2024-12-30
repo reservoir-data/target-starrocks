@@ -47,7 +47,10 @@ jobs:
         - "3.13"
     steps:
     - uses: actions/checkout@v4
-    - run: docker compose up -d
+    - run: |
+        docker compose up --quiet-pull --wait
+        docker compose exec starrocks mysql -P 9030 -h 127.0.0.1 -u root -e 'create database if not exists ${{ env.STARROCKS_DATABASE }}'
+        docker compose ps
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}

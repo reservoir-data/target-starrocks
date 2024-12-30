@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "target-starrocks"
 version = "0.0.0"
-description = "Singer target for Starrocks, built with the Meltano Singer SDK."
+description = "Singer target for StarRocks, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
 keywords = [
     "ELT",
-    "Starrocks",
+    "StarRocks",
 ]
 classifiers = [
     "Intended Audience :: Developers",
@@ -65,4 +65,4 @@ requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry.scripts]
-target-starrocks = 'target_starrocks.target:TargetStarrocks.cli'
+target-starrocks = 'target_starrocks.target:TargetStarRocks.cli'

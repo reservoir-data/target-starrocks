@@ -20,6 +20,7 @@ plugins:
   - name: tap-fedidb
     variant: edgarrmondragon
     pip_url: tap-fedidb
+
   loaders:
   - name: target-starrocks
     namespace: target_starrocks
@@ -33,29 +34,29 @@ plugins:
     - name: user
       kind: string
       label: User
-      description: User for the Starrocks database
+      description: User for the StarRocks database
 
     - name: password
       kind: string
       label: Password
       sensitive: true
-      description: Password for the Starrocks database
+      description: Password for the StarRocks database
 
     - name: host
       kind: string
       label: Host
-      description: Host for the Starrocks database
+      description: Host for the StarRocks database
 
     - name: port
       kind: integer
       label: Port
       value: 9030
-      description: Port for the Starrocks database
+      description: Port for the StarRocks database
 
     - name: database
       kind: string
       label: Database
-      description: Database for the Starrocks database
+      description: Database for the StarRocks database
 
     settings_group_validation:
     - [database]

@@ -1,28 +1,22 @@
 # target-starrocks
 
-`target-starrocks` is a Singer target for [Starrocks].
+`target-starrocks` is a Singer target for [StarRocks].
 
 Build with the [Meltano Target SDK][Singer SDK].
 
-<!--
-
-Developer TODO: Update the below as needed to correctly describe the install procedure. For instance, if you do not have a PyPi repo, or if you want users to directly install from your git repo, you can modify this step as appropriate.
-
 ## Installation
 
-Install from PyPi:
+Install from PyPI:
 
 ```bash
-pipx install target-starrocks
+uv tool install target-starrocks
 ```
 
 Install from GitHub:
 
 ```bash
-pipx install git+https://github.com/ORG_NAME/target-starrocks.git@main
+uv tool install git+https://github.com/reservoir-data/target-starrocks.git@main
 ```
-
--->
 
 ## Supported Python Versions
 
@@ -38,11 +32,11 @@ pipx install git+https://github.com/ORG_NAME/target-starrocks.git@main
 
 | Setting                           | Required | Default                       | Description                                                                                                                                                                                                                                                                                      |
 | :-------------------------------- | :------- | :---------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| user                              | False    | None                          | User for the Starrocks database                                                                                                                                                                                                                                                                  |
-| password                          | False    | None                          | Password for the Starrocks database                                                                                                                                                                                                                                                              |
-| host                              | False    | None                          | Host for the Starrocks database                                                                                                                                                                                                                                                                  |
-| port                              | False    | 9030                          | Port for the Starrocks database                                                                                                                                                                                                                                                                  |
-| database                          | True     | None                          | Database name for the Starrocks database                                                                                                                                                                                                                                                         |
+| user                              | False    | None                          | User for the StarRocks database                                                                                                                                                                                                                                                                  |
+| password                          | False    | None                          | Password for the StarRocks database                                                                                                                                                                                                                                                              |
+| host                              | False    | None                          | Host for the StarRocks database                                                                                                                                                                                                                                                                  |
+| port                              | False    | 9030                          | Port for the StarRocks database                                                                                                                                                                                                                                                                  |
+| database                          | True     | None                          | Database name for the StarRocks database                                                                                                                                                                                                                                                         |
 
 #### Additional Config Options
 
@@ -75,10 +69,6 @@ environment variable is set either in the terminal context or in the `.env` file
 
 ### Authentication and Authorization
 
-<!--
-Developer TODO: If your target requires special access on the destination system, or any special authentication requirements, provide those here.
--->
-
 ## Usage
 
 You can easily run `target-starrocks` by itself or in a pipeline using [Meltano](https://meltano.com/).
@@ -99,7 +89,7 @@ Follow these instructions to contribute to this project.
 ### Initialize your Development Environment
 
 ```bash
-pipx install poetry
+uv tool install poetry
 poetry install
 ```
 
@@ -123,17 +113,13 @@ poetry run target-starrocks --help
 _**Note:** This target will work in any Singer environment and does not require Meltano.
 Examples here are for convenience and to streamline end-to-end orchestration scenarios._
 
-<!--
-Developer TODO:
-Your project comes with a custom `meltano.yml` project file already created. Open the `meltano.yml` and follow any "TODO" items listed in
-the file.
--->
-
 Next, install Meltano (if you haven't already) and any needed plugins:
 
 ```bash
 # Install meltano
-pipx install meltano
+uv tool install meltano
+meltano config meltano set venv.backend uv
+
 # Initialize meltano within this directory
 cd target-starrocks
 meltano install
@@ -144,7 +130,8 @@ Now you can test and orchestrate using Meltano:
 ```bash
 # Test invocation:
 meltano invoke target-starrocks --version
-# OR run a test `elt` pipeline with the Smoke Test sample tap:
+
+# OR run a test EL pipeline with the Smoke Test sample tap:
 meltano run tap-smoke-test target-starrocks
 ```
 
@@ -153,5 +140,5 @@ meltano run tap-smoke-test target-starrocks
 See the [dev guide](https://sdk.meltano.com/en/latest/dev_guide.html) for more instructions on how to use the Meltano Singer SDK to
 develop your own Singer taps and targets.
 
-[Starrocks]: https://starrocks.io
+[StarRocks]: https://starrocks.io
 [Singer SDK]: https://sdk.meltano.com

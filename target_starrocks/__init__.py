@@ -1,1 +1,1 @@
-"""Target for Starrocks."""
+"""Target for StarRocks."""

@@ -36,7 +36,10 @@ singer-sdk = { version="~=0.43.1", extras = ["testing"] }
 s3 = ["fs-s3fs"]
 
 [tool.pytest.ini_options]
-addopts = '--durations=10'
+addopts = [
+    "--durations=10",
+]
+xfail_strict = true
 
 [tool.mypy]
 python_version = "3.12"

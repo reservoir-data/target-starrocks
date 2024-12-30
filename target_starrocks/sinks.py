@@ -1,4 +1,4 @@
-"""Starrocks target sink class, which handles writing streams."""
+"""StarRocks target sink class, which handles writing streams."""
 
 from __future__ import annotations
 
@@ -12,14 +12,14 @@ from singer_sdk.sinks import SQLSink
 from starrocks.datatype import JSON
 
 
-class JSONSchemaToStarrocks(JSONSchemaToSQL):
-    """Convert a JSON schema to a Starrocks-compatible SQL type."""
+class JSONSchemaToStarRocks(JSONSchemaToSQL):
+    """Convert a JSON schema to a StarRocks-compatible SQL type."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the type converter."""
         super().__init__(*args, **kwargs)
         if self._max_varchar_length is None:
-            msg = "max_varchar_length is required for Starrocks"
+            msg = "max_varchar_length is required for StarRocks"
             raise ValueError(msg)
 
     def handle_raw_string(self, schema: dict) -> sa.types.TypeEngine:
@@ -32,8 +32,8 @@ class JSONSchemaToStarrocks(JSONSchemaToSQL):
         return sa.types.VARCHAR(length=max_length or self._max_varchar_length)
 
 
-class StarrocksConnector(SQLConnector):
-    """The connector for Starrocks.
+class StarRocksConnector(SQLConnector):
+    """The connector for StarRocks.
 
     This class handles all DDL and type conversions.
     """
@@ -52,15 +52,15 @@ class StarrocksConnector(SQLConnector):
     max_varchar_length: int = 65_533
 
     @functools.cached_property
-    def jsonschema_to_sql(self) -> JSONSchemaToStarrocks:
+    def jsonschema_to_sql(self) -> JSONSchemaToStarRocks:
         """The JSON-to-SQL type mapper object for this SQL connector."""
-        to_sql = JSONSchemaToStarrocks(max_varchar_length=self.max_varchar_length)
+        to_sql = JSONSchemaToStarRocks(max_varchar_length=self.max_varchar_length)
         to_sql.register_type_handler("array", JSON)
         to_sql.register_type_handler("object", JSON)
         return to_sql
 
     def get_sqlalchemy_url(self, config: dict) -> str:
-        """Generates a SQLAlchemy URL for Starrocks.
+        """Generates a SQLAlchemy URL for StarRocks.
 
         Args:
             config: The configuration for the connector.
@@ -76,7 +76,7 @@ class StarrocksConnector(SQLConnector):
         ).render_as_string(hide_password=False)
 
 
-class StarrocksSink(SQLSink):
-    """Starrocks target sink class."""
+class StarRocksSink(SQLSink):
+    """StarRocks target sink class."""
 
-    connector_class = StarrocksConnector
+    connector_class = StarRocksConnector

@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   build:
+    name: Build and Inspect Python Package
     runs-on: ubuntu-latest
     outputs:
       package_version: ${{ steps.baipp.outputs.package_version }}

@@ -5,13 +5,13 @@ from __future__ import annotations
 import pytest
 from singer_sdk.testing import get_target_test_class
 
-from target_starrocks.target import TargetStarrocks
+from target_starrocks.target import TargetStarRocks
 
 # Run standard built-in target tests from the SDK:
-StandardTargetTests = get_target_test_class(target_class=TargetStarrocks, config={})
+StandardTargetTests = get_target_test_class(target_class=TargetStarRocks, config={})
 
 
-class TestTargetStarrocks(StandardTargetTests):  # type: ignore[misc, valid-type]
+class TestTargetStarRocks(StandardTargetTests):  # type: ignore[misc, valid-type]
     """Standard Target Tests."""
 
     @pytest.fixture(scope="class")

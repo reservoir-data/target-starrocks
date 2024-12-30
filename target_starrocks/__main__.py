@@ -1,7 +1,7 @@
-"""Starrocks entry point."""
+"""StarRocks entry point."""
 
 from __future__ import annotations
 
-from target_starrocks.target import TargetStarrocks
+from target_starrocks.target import TargetStarRocks
 
-TargetStarrocks.cli()
+TargetStarRocks.cli()

@@ -12,8 +12,10 @@ plugins:
     config:
       streams:
       - stream_name: animals
-        input_filename:
-          https://raw.githubusercontent.com/meltano/tap-smoke-test/main/demo-data/animals-data.jsonl
+        input_filename: https://raw.githubusercontent.com/meltano/tap-smoke-test/main/demo-data/animals-data.jsonl
+    metadata:
+      animals:
+        key-properties: [id]
 
   - name: tap-fedidb
     variant: edgarrmondragon
@@ -27,12 +29,36 @@ plugins:
     - stream-maps
     - schema-flattening
 
-    settings_group_validation:
-    - [sqlalchemy_url]
     settings:
-    - name: sqlalchemy_url
+    - name: user
       kind: string
+      label: User
+      description: User for the Starrocks database
+
+    - name: password
+      kind: string
+      label: Password
       sensitive: true
+      description: Password for the Starrocks database
+
+    - name: host
+      kind: string
+      label: Host
+      description: Host for the Starrocks database
+
+    - name: port
+      kind: integer
+      label: Port
+      value: 9030
+      description: Port for the Starrocks database
+
+    - name: database
+      kind: string
+      label: Database
+      description: Database for the Starrocks database
+
+    settings_group_validation:
+    - [database]
 
 venv:
   backend: uv

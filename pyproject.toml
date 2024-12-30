@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "edgarrmondragon-target-starrocks"
+name = "target-starrocks"
 version = "0.0.1"
 description = "Singer target for Starrocks, built with the Meltano Singer SDK."
 readme = "README.md"
@@ -18,13 +18,9 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 license = "Apache-2.0"
-packages = [
-    { include = "target_starrocks" },
-]
 
 [tool.poetry.dependencies]
 python = ">=3.9"
-fs-s3fs = { version = "~=1.1.1", optional = true }
 singer-sdk = { version="~=0.43.1", extras = ["faker"] }
 starrocks = "~=1.2.0"
 
@@ -66,5 +62,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-# CLI declaration
 target-starrocks = 'target_starrocks.target:TargetStarrocks.cli'

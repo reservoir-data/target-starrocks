@@ -1,8 +1,8 @@
 # target-starrocks
 
-`target-starrocks` is a Singer target for Starrocks.
+`target-starrocks` is a Singer target for [Starrocks].
 
-Build with the [Meltano Target SDK](https://sdk.meltano.com).
+Build with the [Meltano Target SDK][Singer SDK].
 
 <!--
 
@@ -24,26 +24,48 @@ pipx install git+https://github.com/ORG_NAME/target-starrocks.git@main
 
 -->
 
+## Supported Python Versions
+
+* 3.9
+* 3.10
+* 3.11
+* 3.12
+* 3.13
+
 ## Configuration
 
 ### Accepted Config Options
 
-<!--
-Developer TODO: Provide a list of config options accepted by the target.
+| Setting                           | Required | Default                       | Description                                                                                                                                                                                                                                                                                      |
+| :-------------------------------- | :------- | :---------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| user                              | False    | None                          | User for the Starrocks database                                                                                                                                                                                                                                                                  |
+| password                          | False    | None                          | Password for the Starrocks database                                                                                                                                                                                                                                                              |
+| host                              | False    | None                          | Host for the Starrocks database                                                                                                                                                                                                                                                                  |
+| port                              | False    | 9030                          | Port for the Starrocks database                                                                                                                                                                                                                                                                  |
+| database                          | True     | None                          | Database name for the Starrocks database                                                                                                                                                                                                                                                         |
 
-This section can be created by copy-pasting the CLI output from:
+#### Additional Config Options
 
-```
-target-starrocks --about --format=markdown
-```
--->
+The following built-in configuration options are also supported:
 
-A full list of supported settings and capabilities for this
-target is available by running:
+| Setting                           | Required | Default                       | Description                                                                                                                                                                                                                                                                                      |
+| :-------------------------------- | :------- | :---------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| default_target_schema             | False    | None                          | The default target database schema name to use for all streams.                                                                                                                                                                                                                                  |
+| hard_delete                       | False    | 0                             | Hard delete records.                                                                                                                                                                                                                                                                             |
+| add_record_metadata               | False    | None                          | Whether to add metadata fields to records.                                                                                                                                                                                                                                                       |
+| load_method                       | False    | TargetLoadMethods.APPEND_ONLY | The method to use when loading data into the destination. `append-only` will always write all input records whether that records already exists or not. `upsert` will update existing records and insert new records. `overwrite` will delete all existing records and insert all input records. |
+| batch_size_rows                   | False    | None                          | Maximum number of rows in each batch.                                                                                                                                                                                                                                                            |
+| process_activate_version_messages | False    | 1                             | Whether to process `ACTIVATE_VERSION` messages.                                                                                                                                                                                                                                                  |
+| validate_records                  | False    | 1                             | Whether to validate the schema of the incoming streams.                                                                                                                                                                                                                                          |
+| stream_maps                       | False    | None                          | Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html).                                                                                                                                                      |
+| stream_map_config                 | False    | None                          | User-defined config values to be used within map expressions.                                                                                                                                                                                                                                    |
+| faker_config                      | False    | None                          | Config for the [`Faker`](https://faker.readthedocs.io/en/master/) instance variable `fake` used within map expressions. Only applicable if the plugin specifies `faker` as an addtional dependency (through the `singer-sdk` `faker` extra or directly).                                         |
+| faker_config.seed                 | False    | None                          | Value to seed the Faker generator for deterministic output: https://faker.readthedocs.io/en/master/#seeding-the-generator                                                                                                                                                                        |
+| faker_config.locale               | False    | None                          | One or more LCID locale strings to produce localized output for: https://faker.readthedocs.io/en/master/#localization                                                                                                                                                                            |
+| flattening_enabled                | False    | None                          | 'True' to enable schema flattening and automatically expand nested properties.                                                                                                                                                                                                                   |
+| flattening_max_depth              | False    | None                          | The max depth to flatten schemas.                                                                                                                                                                                                                                                                |
 
-```bash
-target-starrocks --about
-```
+A full list of supported settings and capabilities is available by running: `target-starrocks --about`
 
 ### Configure using environment variables
 
@@ -66,8 +88,8 @@ You can easily run `target-starrocks` by itself or in a pipeline using [Meltano]
 ```bash
 target-starrocks --version
 target-starrocks --help
-# Test using the "Carbon Intensity" sample:
-tap-carbon-intensity | target-starrocks --config /path/to/target-starrocks-config.json
+# Test using the "Smoke Test" tap:
+tap-smoke-test | target-starrocks --config /path/to/target-starrocks-config.json
 ```
 
 ## Developer Resources
@@ -122,11 +144,14 @@ Now you can test and orchestrate using Meltano:
 ```bash
 # Test invocation:
 meltano invoke target-starrocks --version
-# OR run a test `elt` pipeline with the Carbon Intensity sample tap:
-meltano run tap-carbon-intensity target-starrocks
+# OR run a test `elt` pipeline with the Smoke Test sample tap:
+meltano run tap-smoke-test target-starrocks
 ```
 
 ### SDK Dev Guide
 
 See the [dev guide](https://sdk.meltano.com/en/latest/dev_guide.html) for more instructions on how to use the Meltano Singer SDK to
 develop your own Singer taps and targets.
+
+[Starrocks]: https://starrocks.io
+[Singer SDK]: https://sdk.meltano.com

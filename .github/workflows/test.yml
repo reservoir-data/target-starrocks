@@ -1,0 +1,59 @@
+### A CI workflow template that runs linting and python testing
+### TODO: Modify as needed or as desired.
+
+name: Test target-starrocks
+
+on:
+  push:
+    branches: [main]
+    paths:
+    - .github/workflows/test.yml
+    - target_starrocks/**
+    - tests/**
+    - poetry.lock
+    - pyproject.toml
+    - tox.ini
+  pull_request:
+    branches: [main]
+    paths:
+    - .github/workflows/test.yml
+    - target_starrocks/**
+    - tests/**
+    - poetry.lock
+    - pyproject.toml
+    - tox.ini
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    env:
+      STARROCKS_DATABASE: pytest
+      STARROCKS_PORT: 9030
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+        - "3.9"
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
+    steps:
+    - uses: actions/checkout@v4
+    - run: docker compose up -d
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - uses: astral-sh/setup-uv@v5
+      with:
+        version: ">=0.5,<0.6"
+    - name: Run Tox
+      env:
+        TARGET_STARROCKS_SQLALCHEMY_URL: "starrocks://root:@localhost:${{ env.STARROCKS_PORT }}/${{ env.STARROCKS_DATABASE }}"
+      run: |
+        uvx --with tox-uv tox -e $(echo py${{ matrix.python-version }} | tr -d .)

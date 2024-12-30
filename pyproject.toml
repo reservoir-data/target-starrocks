@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "edgarrmondragon-target-starrocks"
+version = "0.0.1"
+description = "Singer target for Starrocks, built with the Meltano Singer SDK."
+readme = "README.md"
+authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
+keywords = [
+    "ELT",
+    "Starrocks",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+license = "Apache-2.0"
+packages = [
+    { include = "target_starrocks" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+fs-s3fs = { version = "~=1.1.1", optional = true }
+singer-sdk = { version="~=0.43.1", extras = ["faker"] }
+starrocks = "~=1.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = ">=8"
+singer-sdk = { version="~=0.43.1", extras = ["testing"] }
+
+[tool.poetry.extras]
+s3 = ["fs-s3fs"]
+
+[tool.pytest.ini_options]
+addopts = '--durations=10'
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+ignore = [
+    "COM812",  # missing-trailing-comma
+    "ISC001",  # single-line-implicit-string-concatenation
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-starrocks = 'target_starrocks.target:TargetStarrocks.cli'

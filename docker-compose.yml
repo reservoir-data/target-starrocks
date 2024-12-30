@@ -1,0 +1,19 @@
+services:
+  starrocks:
+    image: starrocks/allinone-ubuntu:latest
+    ports:
+      - "8030:8030"
+      - "8040:8040"
+      - "9030:9030"
+    environment:
+      - STARROCKS_HOME=/starrocks
+      - STARROCKS_FE_PORT=8030
+      - STARROCKS_BE_PORT=8040
+      - STARROCKS_HTTP_PORT=9030
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9030"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - ./fixtures:/docker-entrypoint-initdb.d

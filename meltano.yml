@@ -12,7 +12,7 @@ plugins:
     config:
       streams:
       - stream_name: animals
-        input_filename: 
+        input_filename:
           https://raw.githubusercontent.com/meltano/tap-smoke-test/main/demo-data/animals-data.jsonl
 
   - name: tap-fedidb

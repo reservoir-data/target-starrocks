@@ -2,22 +2,13 @@
 
 from __future__ import annotations
 
-import typing as t
-
 import pytest
 from singer_sdk.testing import get_target_test_class
 
 from target_starrocks.target import TargetStarrocks
 
-# TODO: Initialize minimal target config
-SAMPLE_CONFIG: dict[str, t.Any] = {}
-
-
 # Run standard built-in target tests from the SDK:
-StandardTargetTests = get_target_test_class(
-    target_class=TargetStarrocks,
-    config=SAMPLE_CONFIG,
-)
+StandardTargetTests = get_target_test_class(target_class=TargetStarrocks, config={})
 
 
 class TestTargetStarrocks(StandardTargetTests):  # type: ignore[misc, valid-type]
@@ -34,6 +25,3 @@ class TestTargetStarrocks(StandardTargetTests):  # type: ignore[misc, valid-type
         https://github.com/meltano/sdk/tree/main/tests/samples
         """
         return "resource"
-
-
-# TODO: Create additional tests as appropriate for your target.

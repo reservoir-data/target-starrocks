@@ -10,6 +10,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
+    - docker-compose.yml
     - poetry.lock
     - pyproject.toml
     - tox.ini
@@ -19,6 +20,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
+    - docker-compose.yml
     - poetry.lock
     - pyproject.toml
     - tox.ini
@@ -45,13 +47,16 @@ jobs:
         - "3.13"
     steps:
     - uses: actions/checkout@v4
-    - run: docker compose up -d
+    - run: |
+        docker compose up --quiet-pull --wait
+        docker compose exec starrocks mysql -P 9030 -h 127.0.0.1 -u root -e 'create database if not exists ${{ env.STARROCKS_DATABASE }}'
+        docker compose ps
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - uses: astral-sh/setup-uv@v5
       with:
-        version: ">=0.5,<0.6"
+        version: ">=0.5.0"
     - name: Run Tox
       env:
         TARGET_STARROCKS_SQLALCHEMY_URL: "starrocks://root:@localhost:${{ env.STARROCKS_PORT }}/${{ env.STARROCKS_DATABASE }}"

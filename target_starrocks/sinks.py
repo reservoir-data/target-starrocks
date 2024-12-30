@@ -65,7 +65,15 @@ class StarrocksConnector(SQLConnector):
         Args:
             config: The configuration for the connector.
         """
-        return super().get_sqlalchemy_url(config)
+        return sa.URL(
+            drivername="starrocks",
+            username=config.get("user"),
+            password=config.get("password"),
+            host=config.get("host"),
+            port=config.get("port"),
+            database=config["database"],
+            query={},
+        ).render_as_string(hide_password=False)
 
 
 class StarrocksSink(SQLSink):

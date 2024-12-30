@@ -17,11 +17,37 @@ class TargetStarrocks(SQLTarget):
 
     config_jsonschema = th.PropertiesList(
         th.Property(
-            "sqlalchemy_url",
+            "user",
             th.StringType,
-            secret=True,  # Flag config as protected.
-            title="SQLAlchemy URL",
-            description="SQLAlchemy connection string",
+            title="User",
+            description="User for the Starrocks database",
+        ),
+        th.Property(
+            "password",
+            th.StringType,
+            title="Username",
+            description="Password for the Starrocks database",
+            secret=True,
+        ),
+        th.Property(
+            "host",
+            th.StringType,
+            title="Host",
+            description="Host for the Starrocks database",
+        ),
+        th.Property(
+            "port",
+            th.IntegerType,
+            title="Port",
+            description="Port for the Starrocks database",
+            default=9030,
+        ),
+        th.Property(
+            "database",
+            th.StringType,
+            title="Database",
+            description="Database name for the Starrocks database",
+            required=True,
         ),
     ).to_dict()
 

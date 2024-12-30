@@ -10,6 +10,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
+    - docker-compose.yml
     - poetry.lock
     - pyproject.toml
     - tox.ini
@@ -19,6 +20,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
+    - docker-compose.yml
     - poetry.lock
     - pyproject.toml
     - tox.ini

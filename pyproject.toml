@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "target-starrocks"
-version = "0.0.1"
+version = "0.0.0"
 description = "Singer target for Starrocks, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
@@ -31,6 +31,9 @@ singer-sdk = { version="~=0.43.1", extras = ["testing"] }
 [tool.poetry.extras]
 s3 = ["fs-s3fs"]
 
+[tool.poetry-dynamic-versioning]
+enable = true
+
 [tool.pytest.ini_options]
 addopts = [
     "--durations=10",
@@ -58,8 +61,8 @@ allow-star-arg-any = true
 convention = "google"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry.scripts]
 target-starrocks = 'target_starrocks.target:TargetStarrocks.cli'

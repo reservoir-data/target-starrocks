@@ -1,6 +1,6 @@
 services:
   starrocks:
-    image: starrocks/allin1-ubuntu:latest
+    image: starrocks/allin1-ubuntu:3.4.0
     ports:
       - "8030:8030"
       - "8040:8040"

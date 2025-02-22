@@ -1281,19 +1281,19 @@ url = ["furl (>=0.4.1)"]
 
 [[package]]
 name = "starrocks"
-version = "1.2.0"
+version = "1.2.1"
 description = "Python SQLAlchemy Dialect for StarRocks"
 optional = false
 python-versions = "*"
 files = [
-    {file = "starrocks-1.2.0-py3-none-any.whl", hash = "sha256:af7a4f3738bb30854dc231a05c734487f075bd5ec920230ecb28acd73822421c"},
-    {file = "starrocks-1.2.0.tar.gz", hash = "sha256:3e02a6dd2e10ff868a0fe87cf5be9cf018ddeabe980537bd40a43246bd479a52"},
+    {file = "starrocks-1.2.1-py3-none-any.whl", hash = "sha256:154a6d552cbd1a5e331aaf06500926a2fecfa3cab68615cba5603dcd3f0da7bc"},
+    {file = "starrocks-1.2.1.tar.gz", hash = "sha256:75edba47e779bb9afecb5965c146e310ec483f74575125250443605df9f97e91"},
 ]
 
 [package.dependencies]
 alembic = ">=1.4.0"
 pymysql = ">=1.1.0"
-sqlalchemy = ">=2.0"
+sqlalchemy = ">=1.4"
 sqlalchemy-utils = ">=0.41.2"
 
 [[package]]

@@ -57,7 +57,7 @@ jobs:
         docker compose up --quiet-pull --wait
         docker compose exec starrocks mysql -P ${{ env.STARROCKS_PORT }} -h 127.0.0.1 -u root -e 'create database if not exists ${{ env.STARROCKS_DATABASE }}'
         docker compose ps
-    - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+    - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
       with:
         python-version: ${{ matrix.python-version }}
     - uses: astral-sh/setup-uv@22695119d769bdb6f7032ad67b9bca0ef8c4a174 # v5.4.0

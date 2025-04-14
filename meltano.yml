@@ -25,6 +25,7 @@ plugins:
   - name: target-starrocks
     namespace: target_starrocks
     pip_url: -e .
+    repo: https://github.com/reservoir-data/target-starrocks
     capabilities:
     - about
     - stream-maps

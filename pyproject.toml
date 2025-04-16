@@ -5,8 +5,10 @@ description = "Singer target for StarRocks, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["Edgar Ramírez-Mondragón <edgarrm358@gmail.com>"]
 keywords = [
+    "Meltano",
     "ELT",
     "StarRocks",
+    "singer-tap",
 ]
 classifiers = [
     "Intended Audience :: Developers",
@@ -18,13 +20,14 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 license = "Apache-2.0"
+requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
 python = ">=3.9"
 singer-sdk = { version="~=0.45.3", extras = ["faker"] }
 starrocks = "~=1.2.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = ">=8"
 singer-sdk = { version="~=0.45.3", extras = ["testing"] }
 

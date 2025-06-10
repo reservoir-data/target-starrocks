@@ -11,9 +11,8 @@ on:
     - target_starrocks/**
     - tests/**
     - docker-compose.yml
-    - poetry.lock
     - pyproject.toml
-    - tox.ini
+    - uv.lock
   pull_request:
     branches: [main]
     paths:
@@ -21,9 +20,8 @@ on:
     - target_starrocks/**
     - tests/**
     - docker-compose.yml
-    - poetry.lock
     - pyproject.toml
-    - tox.ini
+    - uv.lock
   workflow_dispatch:
 
 env:

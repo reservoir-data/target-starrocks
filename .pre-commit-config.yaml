@@ -35,7 +35,7 @@ repos:
   - id: mypy
     language: python
     additional_dependencies:
-    - types-requests==2.32.0.20250602
+    - types-requests==2.32.4.20250611
 
 - repo: https://github.com/astral-sh/uv-pre-commit
   rev: 0.7.13

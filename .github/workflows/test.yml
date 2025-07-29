@@ -10,7 +10,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
-    - docker-compose.yml
+    - compose.yml
     - pyproject.toml
     - uv.lock
   pull_request:
@@ -19,7 +19,7 @@ on:
     - .github/workflows/test.yml
     - target_starrocks/**
     - tests/**
-    - docker-compose.yml
+    - compose.yml
     - pyproject.toml
     - uv.lock
   workflow_dispatch:

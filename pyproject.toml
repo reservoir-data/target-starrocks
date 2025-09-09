@@ -3,7 +3,7 @@ name = "target-starrocks"
 dynamic = ["version"]
 description = "Singer target for StarRocks, built with the Meltano Singer SDK."
 authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 readme = "README.md"
 license = "Apache-2.0"
 keywords = [
@@ -15,8 +15,6 @@ keywords = [
 classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
@@ -49,7 +47,7 @@ addopts = [
 xfail_strict = true
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 warn_unused_configs = true
 
 [tool.ruff.lint]
@@ -81,8 +79,6 @@ requires = [
 env_list = [
   "3.14",
   "3.13",
-  "3.12",
-  "3.11",
 ]
 
 [tool.tox.env_run_base]

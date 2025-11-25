@@ -44,7 +44,7 @@ jobs:
         - "3.13"
         - "3.14"
     steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
     - run: |
         docker compose up --quiet-pull --wait
         docker compose exec starrocks mysql -P ${{ env.STARROCKS_PORT }} -h 127.0.0.1 -u root -e 'create database if not exists ${{ env.STARROCKS_DATABASE }}'

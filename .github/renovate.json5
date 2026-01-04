@@ -4,6 +4,9 @@
   "extends": [
     // https://docs.renovatebot.com/config-presets/#grouporganization-level-presets
     // https://github.com/reservoir-data/.github/blob/main/.github/renovate.json5
-    "reservoir-data/.github//.github/renovate.json5"
+    "reservoir-data/.github//.github/renovate.json5",
+
+    // https://docs.renovatebot.com/presets-default/#automergepatch
+    ":automergePatch",
   ]
 }

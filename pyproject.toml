@@ -20,7 +20,7 @@ classifiers = [
 ]
 dependencies = [
     "singer-sdk[faker]~=0.53.2",
-    "starrocks~=1.2.0",
+    "starrocks~=1.3.2",
 ]
 
 [project.optional-dependencies]

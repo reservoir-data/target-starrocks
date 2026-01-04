@@ -433,15 +433,6 @@ wheels = [
 ]
 
 [[package]]
-name = "lark"
-version = "1.3.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/da/34/28fff3ab31ccff1fd4f6c7c7b0ceb2b6968d8ea4950663eadcb5720591a0/lark-1.3.1.tar.gz", hash = "sha256:b426a7a6d6d53189d318f2b6236ab5d6429eaf09259f1ca33eb716eed10d2905", size = 382732, upload-time = "2025-10-27T18:25:56.653Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/3d/14ce75ef66813643812f3093ab17e46d3a206942ce7376d31ec2d36229e7/lark-1.3.1-py3-none-any.whl", hash = "sha256:c629b661023a014c37da873b4ff58a817398d12635d3bbb2c5a03be7fe5d1e12", size = 113151, upload-time = "2025-10-27T18:25:54.882Z" },
-]
-
-[[package]]
 name = "mako"
 version = "1.3.10"
 source = { registry = "https://pypi.org/simple" }
@@ -1009,18 +1000,17 @@ wheels = [
 
 [[package]]
 name = "starrocks"
-version = "1.3.2"
+version = "1.2.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
-    { name = "lark" },
     { name = "pymysql" },
     { name = "sqlalchemy" },
     { name = "sqlalchemy-utils" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/29/4f/adf8926b90c75a9537df70878e8ee8c4344b755ab562349afdaf7862ab8b/starrocks-1.3.2.tar.gz", hash = "sha256:50f86707f909a3db573dab9bdd98356b0b773e0a32733c1b01472e460fd94cf8", size = 102793, upload-time = "2025-12-11T07:22:58.935Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fc/8c/cfa5c481c0e5e3212a8d98a2d22d91722dd88c59532956162740cfb33d9d/starrocks-1.2.3.tar.gz", hash = "sha256:d1ba12694ea08a881fbbe18a2348c7706b02a9fec73270f69516d430fd59c54e", size = 21882, upload-time = "2025-09-10T03:18:13.305Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/80/21/cdd032f7f247eed5890e224f66941939ec9855fac779bd8c59ffa2bd885c/starrocks-1.3.2-py3-none-any.whl", hash = "sha256:a74be05b16e3f746987b1848971de5cc3a1f440772557c7532541bad142d30cc", size = 107711, upload-time = "2025-12-11T07:22:56.518Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/51/746dfb12c5f5a80793435ad06345042f6abc1ce202703f114633da2b7cbe/starrocks-1.2.3-py3-none-any.whl", hash = "sha256:e99d6145ab09aa30369a83000aba6c48c1f30e16efd1fff0abb65e480c2ec374", size = 20486, upload-time = "2025-09-10T03:18:11.875Z" },
 ]
 
 [[package]]
@@ -1046,7 +1036,7 @@ dev = [
 requires-dist = [
     { name = "s3fs", marker = "extra == 's3'", specifier = "~=2025.12.0" },
     { name = "singer-sdk", extras = ["faker"], specifier = "~=0.53.2" },
-    { name = "starrocks", specifier = "~=1.3.2" },
+    { name = "starrocks", specifier = "~=1.2.0" },
 ]
 provides-extras = ["s3"]
 

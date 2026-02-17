@@ -3,18 +3,18 @@
 from __future__ import annotations
 
 import functools
-from typing import Any
+from typing import Any, override
 
 import sqlalchemy as sa
-from singer_sdk.connectors import SQLConnector
-from singer_sdk.connectors.sql import JSONSchemaToSQL
-from singer_sdk.sinks import SQLSink
+from singer_sdk.sql.connector import JSONSchemaToSQL, SQLConnector
+from singer_sdk.sql.sink import SQLSink
 from starrocks.datatype import JSON
 
 
 class JSONSchemaToStarRocks(JSONSchemaToSQL):
     """Convert a JSON schema to a StarRocks-compatible SQL type."""
 
+    @override
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the type converter."""
         super().__init__(*args, **kwargs)
@@ -22,6 +22,7 @@ class JSONSchemaToStarRocks(JSONSchemaToSQL):
             msg = "max_varchar_length is required for StarRocks"
             raise ValueError(msg)
 
+    @override
     def handle_raw_string(self, schema: dict) -> sa.types.TypeEngine:
         """Handle a raw string type."""
         max_length: int | None = schema.get("maxLength")
@@ -51,6 +52,7 @@ class StarRocksConnector(SQLConnector):
     #: or 1048576 (>=2.1).
     max_varchar_length: int = 65_533
 
+    @override
     @functools.cached_property
     def jsonschema_to_sql(self) -> JSONSchemaToStarRocks:
         """The JSON-to-SQL type mapper object for this SQL connector."""
@@ -59,6 +61,7 @@ class StarRocksConnector(SQLConnector):
         to_sql.register_type_handler("object", JSON)
         return to_sql
 
+    @override
     def get_sqlalchemy_url(self, config: dict) -> str:
         """Generates a SQLAlchemy URL for StarRocks.
 

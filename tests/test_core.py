@@ -15,7 +15,7 @@ class TestTargetStarRocks(StandardTargetTests):  # type: ignore[misc, valid-type
     """Standard Target Tests."""
 
     @pytest.fixture(scope="class")
-    def resource(self):  # noqa: ANN201
+    def resource(self) -> str:
         """Generic external resource.
 
         This fixture is useful for setup and teardown of external resources,

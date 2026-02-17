@@ -33,22 +33,35 @@ target-starrocks = "target_starrocks.target:TargetStarRocks.cli"
 
 [dependency-groups]
 dev = [
-    "pytest>=8",
+    { include-group = "test" },
+    { include-group = "typing" },
+]
+test = [
+    "pytest>=9",
     "singer-sdk[testing]",
+]
+typing = [
+    { include-group = "test" },
+    "mypy>=1.19.1",
+    "ty>=0.0.17",
 ]
 
 [tool.hatch.version]
 source = "vcs"
 
-[tool.pytest.ini_options]
+[tool.pytest]
 addopts = [
     "--durations=10",
 ]
+minversion = "9"
 xfail_strict = true
 
 [tool.mypy]
-python_version = "3.13"
+follow_untyped_imports = true
+strict = true
+warn_redundant_casts = true
 warn_unused_configs = true
+warn_unused_ignores = true
 
 [tool.ruff.lint]
 ignore = [
@@ -74,18 +87,31 @@ build-backend = "hatchling.build"
 min_version = "4.22"
 requires = [
     "tox>=4.22",
+    "tox-gh>=1.6.1",
     "tox-uv",
 ]
 env_list = [
+  "typing",
   "3.14",
   "3.13",
 ]
 
+[tool.tox.gh.python]
+"3.14" = [ "3.14", "typing" ]
+"3.13" = [ "3.13" ]
+
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 pass_env = [ "TARGET_STARROCKS_*" ]
-dependency_groups = [ "dev" ]
+dependency_groups = [ "test" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+
+[tool.tox.env.typing]
+dependency_groups = [ "typing" ]
+commands = [
+    [ "mypy", "target_starrocks", "tests" ],
+    [ "ty", "check", "target_starrocks", "tests" ],
+]
 
 [tool.uv.sources]
 singer-sdk = { git = "https://github.com/meltano/sdk.git", rev = "main" }

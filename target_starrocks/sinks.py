@@ -8,7 +8,8 @@ from typing import Any, override
 import sqlalchemy as sa
 from singer_sdk.sql.connector import JSONSchemaToSQL, SQLConnector
 from singer_sdk.sql.sink import SQLSink
-from starrocks.datatype import JSON
+from sqlalchemy.util import immutabledict
+from starrocks.datatype import JSON  # type: ignore[attr-defined]
 
 
 class JSONSchemaToStarRocks(JSONSchemaToSQL):
@@ -23,7 +24,7 @@ class JSONSchemaToStarRocks(JSONSchemaToSQL):
             raise ValueError(msg)
 
     @override
-    def handle_raw_string(self, schema: dict) -> sa.types.TypeEngine:
+    def handle_raw_string(self, schema: dict[str, Any]) -> sa.types.VARCHAR:
         """Handle a raw string type."""
         max_length: int | None = schema.get("maxLength")
 
@@ -62,7 +63,7 @@ class StarRocksConnector(SQLConnector):
         return to_sql
 
     @override
-    def get_sqlalchemy_url(self, config: dict) -> str:
+    def get_sqlalchemy_url(self, config: dict[str, Any]) -> str:
         """Generates a SQLAlchemy URL for StarRocks.
 
         Args:
@@ -75,11 +76,11 @@ class StarRocksConnector(SQLConnector):
             host=config.get("host"),
             port=config.get("port"),
             database=config["database"],
-            query={},
+            query=immutabledict(),
         ).render_as_string(hide_password=False)
 
 
-class StarRocksSink(SQLSink):
+class StarRocksSink(SQLSink[StarRocksConnector]):
     """StarRocks target sink class."""
 
     connector_class = StarRocksConnector

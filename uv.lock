@@ -926,8 +926,8 @@ wheels = [
 
 [[package]]
 name = "singer-sdk"
-version = "0.53.5"
-source = { registry = "https://pypi.org/simple" }
+version = "0.53.6.dev56+g0c613aa8a"
+source = { git = "https://github.com/meltano/sdk.git?rev=main#0c613aa8ac066f7ab800e1e143e4af64ec1dcab8" }
 dependencies = [
     { name = "click" },
     { name = "fsspec" },
@@ -945,10 +945,7 @@ dependencies = [
     { name = "simplejson" },
     { name = "sqlalchemy" },
     { name = "universal-pathlib" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/3f/95/73f166294a175e9229ce66e05817788ebd4f4e2c19ce84c67421ded7dbe8/singer_sdk-0.53.5.tar.gz", hash = "sha256:da58ced888e2724323ab27a2873bc83072edbf7ee2d8e24542345a0830e32609", size = 1335104, upload-time = "2026-01-06T23:46:37.758Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/34/1d9f702536fa634a728956fd6e3360db672061145be66b4908d3e4484569/singer_sdk-0.53.5-py3-none-any.whl", hash = "sha256:8224fce7ec6b131e2827627f9fcd20fb16b4dc31b17cd1d4f22676e55c62341f", size = 208394, upload-time = "2026-01-06T23:46:36.342Z" },
+    { name = "urllib3" },
 ]
 
 [package.optional-dependencies]
@@ -1052,7 +1049,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "s3fs", marker = "extra == 's3'", specifier = "~=2026.1.0" },
-    { name = "singer-sdk", extras = ["faker"], specifier = "~=0.53.2" },
+    { name = "singer-sdk", extras = ["faker"], git = "https://github.com/meltano/sdk.git?rev=main" },
     { name = "starrocks", specifier = "~=1.2.0" },
 ]
 provides-extras = ["s3"]
@@ -1060,7 +1057,7 @@ provides-extras = ["s3"]
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8" },
-    { name = "singer-sdk", extras = ["testing"] },
+    { name = "singer-sdk", extras = ["testing"], git = "https://github.com/meltano/sdk.git?rev=main" },
 ]
 
 [[package]]

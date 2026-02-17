@@ -3,17 +3,16 @@
 from __future__ import annotations
 
 from singer_sdk import typing as th
-from singer_sdk.target_base import SQLTarget
+from singer_sdk.sql.target import SQLTarget
 
-from target_starrocks.sinks import (
-    StarRocksSink,
-)
+from target_starrocks.sinks import StarRocksSink
 
 
 class TargetStarRocks(SQLTarget):
     """Sample target for StarRocks."""
 
     name = "target-starrocks"
+    default_sink_class = StarRocksSink
 
     config_jsonschema = th.PropertiesList(
         th.Property(
@@ -50,8 +49,6 @@ class TargetStarRocks(SQLTarget):
             required=True,
         ),
     ).to_dict()
-
-    default_sink_class = StarRocksSink
 
 
 if __name__ == "__main__":

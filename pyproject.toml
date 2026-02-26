@@ -112,6 +112,3 @@ commands = [
     [ "mypy", "target_starrocks", "tests" ],
     [ "ty", "check", "target_starrocks", "tests" ],
 ]
-
-[tool.uv.sources]
-singer-sdk = { git = "https://github.com/meltano/sdk.git", rev = "main" }

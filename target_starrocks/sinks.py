@@ -6,10 +6,11 @@ import functools
 from typing import Any, override
 
 import sqlalchemy as sa
-from singer_sdk.sql.connector import JSONSchemaToSQL, SQLConnector
+from singer_sdk.sql.connector import FullyQualifiedName, JSONSchemaToSQL, SQLConnector
 from singer_sdk.sql.sink import SQLSink
+from sqlalchemy.sql import ddl
 from sqlalchemy.util import immutabledict
-from starrocks.datatype import JSON  # type: ignore[attr-defined]
+from starrocks.datatype import JSON
 
 
 class JSONSchemaToStarRocks(JSONSchemaToSQL):
@@ -61,6 +62,36 @@ class StarRocksConnector(SQLConnector):
         to_sql.register_type_handler("array", JSON)
         to_sql.register_type_handler("object", JSON)
         return to_sql
+
+    @override
+    def get_column_add_ddl(
+        self,
+        table_name: str | FullyQualifiedName,
+        column_name: str,
+        column_type: sa.types.TypeEngine[Any],
+    ) -> sa.DDL:
+        """Get the ADD COLUMN DDL statement.
+
+        Overrides the base implementation to work around a bug in the starrocks
+        library where ``column.table`` can be ``None`` when compiling a standalone
+        ``CreateColumn`` clause, causing an ``AttributeError`` in
+        ``StarRocksDDLCompiler._get_table_agg_info``.
+
+        By attaching the column to a temporary dummy table before compilation, the
+        dialect can safely inspect ``column.table.info`` without raising.
+        """
+        column = sa.Column(column_name, column_type)
+        dummy_table = sa.Table("_dummy", sa.MetaData())
+        dummy_table.append_column(column)
+        create_column_clause = ddl.CreateColumn(column)
+        compiled = create_column_clause.compile(self._engine).string
+        return sa.DDL(  # type: ignore[no-untyped-call]
+            "ALTER TABLE %(table_name)s ADD COLUMN %(create_column_clause)s",
+            {
+                "table_name": table_name,
+                "create_column_clause": compiled,
+            },
+        )
 
     @override
     def get_sqlalchemy_url(self, config: dict[str, Any]) -> str:

@@ -1169,6 +1169,7 @@ name = "target-starrocks"
 source = { editable = "." }
 dependencies = [
     { name = "singer-sdk", extra = ["faker"] },
+    { name = "sqlalchemy" },
     { name = "starrocks" },
 ]
 
@@ -1197,8 +1198,9 @@ typing = [
 
 [package.metadata]
 requires-dist = [
-    { name = "s3fs", marker = "extra == 's3'", specifier = "~=2026.2.0" },
+    { name = "s3fs", marker = "extra == 's3'", specifier = ">=2026.2.0" },
     { name = "singer-sdk", extras = ["faker"], specifier = "~=0.54.0a5" },
+    { name = "sqlalchemy", specifier = "==2.0.48" },
     { name = "starrocks", specifier = "~=1.3.3" },
 ]
 provides-extras = ["s3"]

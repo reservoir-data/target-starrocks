@@ -1,114 +1,124 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs==0.5",
+  "hatchling==1.29",
+]
+
 [project]
 name = "target-starrocks"
-dynamic = ["version"]
 description = "Singer target for StarRocks, built with the Meltano Singer SDK."
-authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
-requires-python = ">=3.13"
 readme = "README.md"
-license = "Apache-2.0"
 keywords = [
-    "Meltano",
-    "ELT",
-    "StarRocks",
-    "singer-tap",
+  "ELT",
+  "Meltano",
+  "singer-tap",
+  "StarRocks",
 ]
+license = "Apache-2.0"
+requires-python = ">=3.13"
 classifiers = [
-    "Intended Audience :: Developers",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
+dynamic = [ "version" ]
 dependencies = [
-    "singer-sdk[faker]~=0.54.0a5",
-    "starrocks~=1.3.3",
+  "singer-sdk[faker]~=0.54.0a5",
+  "sqlalchemy==2.0.48",
+  "starrocks~=1.3.3",
 ]
-
+[[project.authors]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
 [project.optional-dependencies]
 s3 = [
-    "s3fs~=2026.2.0",
+  "s3fs>=2026.2",
 ]
-
 [project.scripts]
 target-starrocks = "target_starrocks.target:TargetStarRocks.cli"
 
 [dependency-groups]
 dev = [
-    { include-group = "test" },
-    { include-group = "typing" },
+  { include-group = "test" },
+  { include-group = "typing" },
 ]
 test = [
-    "pytest>=9",
-    "singer-sdk[testing]",
+  "pytest>=9",
+  "singer-sdk[testing]",
 ]
 typing = [
-    { include-group = "test" },
-    "mypy>=1.19.1",
-    "ty>=0.0.17",
+  "mypy>=1.19.1",
+  "ty>=0.0.17",
+  { include-group = "test" },
 ]
 
+[tool.hatch]
 [tool.hatch.version]
 source = "vcs"
 
-[tool.pytest]
-addopts = [
-    "--durations=10",
+[tool.ruff]
+[tool.ruff.lint]
+select = [ "ALL" ]
+ignore = [
+  "COM812", # missing-trailing-comma
+  "ISC001", # single-line-implicit-string-concatenation
 ]
-minversion = "9"
-xfail_strict = true
+flake8-annotations.allow-star-arg-any = true
+pydocstyle.convention = "google"
+
+[tool.pyproject-fmt]
+table_format = "long"
 
 [tool.mypy]
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
 follow_untyped_imports = true
 strict = true
 warn_redundant_casts = true
+warn_unreachable = true
 warn_unused_configs = true
 warn_unused_ignores = true
 
-[tool.ruff.lint]
-ignore = [
-    "COM812",  # missing-trailing-comma
-    "ISC001",  # single-line-implicit-string-concatenation
+[tool.ty.rules]
+unused-type-ignore-comment = "ignore"
+
+[tool.pytest]
+addopts = [
+  "--durations=10",
+  "-ra",
 ]
-select = ["ALL"]
-
-[tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-[build-system]
-requires = [
-    "hatchling==1.29.0",
-    "hatch-vcs==0.5",
-]
-build-backend = "hatchling.build"
+filterwarnings = [ "error" ]
+log_level = "INFO"
+minversion = "9"
+strict = true
+testpaths = [ "tests" ]
 
 [tool.tox]
-min_version = "4.22"
+min_version = "4.43"
 requires = [
-    "tox>=4.22",
-    "tox-gh>=1.6.1",
-    "tox-uv",
+  "tox>=4.43",
+  "tox-gh>=1.6.1",
+  "tox-uv",
 ]
 env_list = [
   "typing",
   "3.14",
   "3.13",
 ]
-
-[tool.tox.gh.python]
-"3.14" = [ "3.14", "typing" ]
-"3.13" = [ "3.13" ]
+[tool.tox.env]
+typing.dependency_groups = [ "typing" ]
+typing.commands = [
+  [ "mypy", "target_starrocks", "tests" ],
+  [ "ty", "check", "target_starrocks", "tests" ],
+]
 
 [tool.tox.env_run_base]
 runner = "uv-venv-lock-runner"
 pass_env = [ "TARGET_STARROCKS_*" ]
 dependency_groups = [ "test" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
-
-[tool.tox.env.typing]
-dependency_groups = [ "typing" ]
-commands = [
-    [ "mypy", "target_starrocks", "tests" ],
-    [ "ty", "check", "target_starrocks", "tests" ],
-]
+[tool.tox.gh]
+python."3.14" = [ "3.14", "typing" ]
+python."3.13" = [ "3.13" ]

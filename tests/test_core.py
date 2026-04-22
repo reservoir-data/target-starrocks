@@ -11,7 +11,7 @@ from target_starrocks.target import TargetStarRocks
 StandardTargetTests = get_target_test_class(target_class=TargetStarRocks, config={})
 
 
-class TestTargetStarRocks(StandardTargetTests):  # type: ignore[misc, valid-type]
+class TestTargetStarRocks(StandardTargetTests):  # type: ignore[misc, valid-type]  # ty:ignore[unsupported-base]
     """Standard Target Tests."""
 
     @pytest.fixture(scope="class")

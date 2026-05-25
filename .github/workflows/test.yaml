@@ -1,10 +1,13 @@
 name: Test target-starrocks
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
     paths:
-    - .github/workflows/test.yml
+    - .github/workflows/test.yaml
     - target_starrocks/**
     - tests/**
     - compose.yml
@@ -12,33 +15,38 @@ on:
     - uv.lock
   pull_request:
     paths:
-    - .github/workflows/test.yml
+    - .github/workflows/test.yaml
     - target_starrocks/**
     - tests/**
     - compose.yml
     - pyproject.toml
     - uv.lock
   workflow_dispatch:
+  schedule:
+  # Run weekly on Monday at 12:00 PM UTC
+  - cron: "0 12 * * 1"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 env:
   FORCE_COLOR: 1
+  # renovate: datasource=pypi depName=prek
+  PREK_VERSION: 0.4.1
   # renovate: datasource=pypi depName=tox
-  TOX_VERSION: 4.46.3
+  TOX_VERSION: 4.54.0
   # renovate: datasource=pypi depName=tox-gh
   TOX_GH_VERSION: 1.7.1
   # renovate: datasource=pypi depName=tox-uv
-  TOX_UV_VERSION: 1.33.0
+  TOX_UV_VERSION: 1.35.2
   # renovate: datasource=pypi depName=uv
-  UV_VERSION: 0.10.7
+  UV_VERSION: 0.11.16
 
 jobs:
   build-package:
     name: Build & verify package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       supported-python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
     steps:
@@ -46,32 +54,31 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: hynek/build-and-inspect-python-package@efb823f52190ad02594531168b7a2d5790e66516 # v2.14.0
+      - uses: hynek/build-and-inspect-python-package@d44ca7d91762de7a7d5436ddae667c6da6d1c3df # v2.18.0
         id: baipp
 
-  pytest:
+  tests:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build-package
     env:
       STARROCKS_DATABASE: pytest
       STARROCKS_PORT: 9030
-
     strategy:
-      fail-fast: false
       matrix:
         python-version: ${{ fromJson(needs.build-package.outputs.supported-python-versions) }}
+
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
     - run: |
         docker compose up --quiet-pull --wait
         docker compose exec starrocks mysql -P ${{ env.STARROCKS_PORT }} -h 127.0.0.1 -u root -e 'create database if not exists ${{ env.STARROCKS_DATABASE }}'
         docker compose ps
-    - uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7.3.1
+    - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
       with:
         python-version: ${{ matrix.python-version }}
         version: ${{ env.UV_VERSION }}
-    - name: Run Tox
+    - name: Run
       env:
         TARGET_STARROCKS_USER: root
         TARGET_STARROCKS_HOST: localhost
@@ -83,3 +90,38 @@ jobs:
         --with tox-uv==${{ env.TOX_UV_VERSION }}
         --with tox==${{ env.TOX_VERSION }}
         tox
+
+  static:
+    name: Static Analysis
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+    - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      with:
+        version: ${{ env.UV_VERSION }}
+    - name: Install tools
+      run: >
+        uv tool install
+        --managed-python
+        --with tox-uv==${TOX_UV_VERSION}
+        --with tox==${TOX_VERSION}
+        tox
+    - name: Static Analysis
+      run: tox -m check
+
+  pre-commit:
+    name: pre-commit hooks
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+    - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      with:
+        version: ${{ env.UV_VERSION }}
+    - run: >
+        uvx
+        --with prek==${PREK_VERSION}
+        prek run --show-diff-on-failure --all-files

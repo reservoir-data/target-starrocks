@@ -13,12 +13,25 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/tox-dev/pyproject-fmt
-  rev: "v2.20.0"
+  rev: v2.21.2
   hooks:
   - id: pyproject-fmt
 
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.15.14
+  hooks:
+  - id: ruff-check
+    args: [--fix, --exit-non-zero-on-fix, --show-fixes]
+  - id: ruff-format
+
+- repo: https://github.com/astral-sh/uv-pre-commit
+  rev: 0.11.16
+  hooks:
+  - id: uv-lock
+  - id: uv-sync
+
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.37.0
+  rev: 0.37.2
   hooks:
   - id: check-github-workflows
   - id: check-meltano
@@ -26,19 +39,6 @@ repos:
     language: python
     additional_dependencies:
     - pyjson5==2.0.0
-
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.7
-  hooks:
-  - id: ruff-check
-    args: [--fix, --exit-non-zero-on-fix, --show-fixes]
-  - id: ruff-format
-
-- repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.10.12
-  hooks:
-  - id: uv-lock
-  - id: uv-sync
 
 - repo: https://github.com/hukkin/mdformat
   rev: 1.0.0

@@ -84,12 +84,13 @@ jobs:
         TARGET_STARROCKS_HOST: localhost
         TARGET_STARROCKS_PORT: ${{ env.STARROCKS_PORT }}
         TARGET_STARROCKS_DATABASE: ${{ env.STARROCKS_DATABASE }}
+        MATRIX_PYTHON_VERSION: ${{ matrix.python-version }}
       run: >
         uvx
         --with tox-gh==${{ env.TOX_GH_VERSION }}
         --with tox-uv==${{ env.TOX_UV_VERSION }}
         --with tox==${{ env.TOX_VERSION }}
-        tox
+        tox -e $MATRIX_PYTHON_VERSION
 
   static:
     name: Static Analysis

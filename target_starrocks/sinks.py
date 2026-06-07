@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, override
+from typing import TYPE_CHECKING, Any, override
 
 import sqlalchemy as sa
 from singer_sdk.sql.connector import FullyQualifiedName, JSONSchemaToSQL, SQLConnector
@@ -11,6 +11,9 @@ from singer_sdk.sql.sink import SQLSink
 from sqlalchemy.sql import ddl
 from sqlalchemy.util import immutabledict
 from starrocks.datatype import JSON
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 class JSONSchemaToStarRocks(JSONSchemaToSQL):
@@ -94,7 +97,7 @@ class StarRocksConnector(SQLConnector):
         )
 
     @override
-    def get_sqlalchemy_url(self, config: dict[str, Any]) -> str:
+    def get_sqlalchemy_url(self, config: Mapping[str, Any]) -> str:
         """Generates a SQLAlchemy URL for StarRocks.
 
         Args:

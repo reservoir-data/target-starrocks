@@ -83,18 +83,18 @@ DEP002 = [ "s3fs" ]
 table_format = "long"
 
 [tool.mypy]
+follow_untyped_imports = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
 enable_error_code = [
   "exhaustive-match",
   "ignore-without-code",
   "redundant-expr",
   "truthy-bool",
 ]
-follow_untyped_imports = true
 strict = true
-warn_redundant_casts = true
-warn_unreachable = true
 warn_unused_configs = true
-warn_unused_ignores = true
 
 [tool.ty.rules]
 unused-type-ignore-comment = "ignore"
@@ -113,7 +113,6 @@ testpaths = [ "tests" ]
 [tool.tox]
 requires = [
   "tox>=4.53",
-  "tox-gh>=1.7.1",
   "tox-uv>=1.35",
 ]
 env_list = [
@@ -123,24 +122,22 @@ env_list = [
 ]
 [tool.tox.env.dependencies]
 description = "check for unused, missing and transitive dependencies"
-labels = [ "check" ]
 dependency_groups = [ "testing" ]
 commands = [ [ "deptry", "." ] ]
+labels = [ "check" ]
 [tool.tox.env.typing]
 description = "type checks"
-labels = [ "check" ]
 dependency_groups = [ "typing" ]
 commands = [
   [ "mypy", "target_starrocks", "tests" ],
   [ "ty", "check", "target_starrocks", "tests" ],
 ]
+labels = [ "check" ]
 
 [tool.tox.env_run_base]
-description = "run tests on Python {py_dot_ver}"
 runner = "uv-venv-lock-runner"
-pass_env = [ "TARGET_STARROCKS_*" ]
+description = "run tests on Python {py_dot_ver}"
 dependency_groups = [ "testing" ]
+pass_env = [ "TARGET_STARROCKS_*" ]
 commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
-[tool.tox.gh.python]
-"3.14" = [ "3.14", "typing" ]
-"3.13" = [ "3.13" ]
+base_python_file = [ ".python-version" ]

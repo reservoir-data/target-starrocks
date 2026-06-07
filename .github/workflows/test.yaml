@@ -36,8 +36,6 @@ env:
   PREK_VERSION: 0.4.1
   # renovate: datasource=pypi depName=tox
   TOX_VERSION: 4.54.0
-  # renovate: datasource=pypi depName=tox-gh
-  TOX_GH_VERSION: 1.7.1
   # renovate: datasource=pypi depName=tox-uv
   TOX_UV_VERSION: 1.35.2
   # renovate: datasource=pypi depName=uv

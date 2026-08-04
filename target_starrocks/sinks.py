@@ -1,4 +1,7 @@
-"""StarRocks target sink class, which handles writing streams."""
+"""StarRocks target sink class, which handles writing streams.
+
+Copyright (c) 2026 Edgar-Ramírez Mondragón
+"""
 
 from __future__ import annotations
 

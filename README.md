@@ -22,6 +22,7 @@ uv tool install git+https://github.com/reservoir-data/target-starrocks.git@main
 
 - 3.13
 - 3.14
+- 3.15
 
 ## Configuration
 

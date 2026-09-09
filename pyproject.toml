@@ -61,8 +61,10 @@ typing = [
 fallback-version = "0.1.0.dev0"
 source = "vcs"
 
-[tool.uv.sources]
-singer-sdk = { git = "https://github.com/meltano/sdk.git", rev = "main" }
+[tool.uv]
+override-dependencies = [
+  "singer-sdk[faker]>=0.55.0a9",
+]
 
 [tool.ruff.lint]
 select = [ "ALL" ]

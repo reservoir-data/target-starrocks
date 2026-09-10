@@ -43,7 +43,7 @@ class JSONSchemaToStarRocks(JSONSchemaToSQL):
     def convert_array_schema(self, schema: dict[str, Any]) -> sa.types.TypeEngine[Any]:
         """Convert array schema to ARRAY type."""
         if items := schema.get("items"):
-            ARRAY(self.to_sql_type(items))
+            return ARRAY(self.to_sql_type(items))
         return sa.types.VARCHAR()
 
 

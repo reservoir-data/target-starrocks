@@ -189,3 +189,38 @@ class StarRocksSink(SQLSink[StarRocksConnector]):
     """StarRocks target sink class."""
 
     connector_class = StarRocksConnector
+
+    @override
+    def generate_insert_statement(
+        self,
+        full_table_name: str | FullyQualifiedName,
+        schema: dict[str, Any],
+    ) -> sa.sql.Insert:
+        """Generate an insert statement for the given records.
+
+        Overrides the base implementation, which assumes every column is a
+        ``String``, losing the type information required to correctly bind
+        structured types like ``ARRAY`` and ``JSON``.
+
+        Args:
+            full_table_name: the target table name.
+            schema: the JSON schema for the new table.
+
+        Returns:
+            An insert statement.
+        """
+        conformed_schema = self.conform_schema(schema)
+        _, schema_name, table_name = self.connector.parse_full_table_name(
+            full_table_name,
+        )
+        to_sql = self.connector.jsonschema_to_sql
+        table = sa.Table(
+            table_name,
+            sa.MetaData(),
+            *[
+                sa.Column(name, to_sql.to_sql_type(property_schema))
+                for name, property_schema in conformed_schema["properties"].items()
+            ],
+            schema=schema_name,
+        )
+        return sa.insert(table)

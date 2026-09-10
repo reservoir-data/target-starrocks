@@ -6,17 +6,77 @@ Copyright (c) 2026 Edgar-Ramírez Mondragón
 from __future__ import annotations
 
 import functools
+import json
 from typing import TYPE_CHECKING, Any, override
 
 import sqlalchemy as sa
 from singer_sdk.sql.connector import FullyQualifiedName, JSONSchemaToSQL, SQLConnector
 from singer_sdk.sql.sink import SQLSink
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql import ddl
+from sqlalchemy.sql.expression import ColumnElement
 from sqlalchemy.util import immutabledict
-from starrocks.datatype import ARRAY, JSON
+from starrocks.datatype import ARRAY as _ARRAY
+from starrocks.datatype import JSON
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+
+    from sqlalchemy.engine.interfaces import Dialect
+    from sqlalchemy.sql.compiler import SQLCompiler
+    from sqlalchemy.sql.type_api import _BindProcessorType
+
+
+class _ArrayCast(ColumnElement[Any]):
+    """A ``CAST(<value> AS ARRAY<...>)`` expression.
+
+    The MySQL/MariaDB SQL compiler that the ``starrocks`` dialect inherits
+    from only knows how to render ``CAST`` for a hardcoded set of types and
+    silently drops the cast for anything else (like ``ARRAY``), emitting a
+    warning. This bypasses that compiler entirely to render the cast as
+    plain SQL text.
+    """
+
+    inherit_cache = True
+
+    def __init__(self, bindvalue: ColumnElement[Any], type_: ARRAY) -> None:
+        self.bindvalue = bindvalue
+        self.array_type = type_
+
+
+@compiles(_ArrayCast)
+def _compile_array_cast(
+    element: _ArrayCast,
+    compiler: SQLCompiler,
+    **kw: Any,
+) -> str:
+    rendered = compiler.process(element.bindvalue, **kw)
+    return f"CAST({rendered} AS {element.array_type.get_col_spec()})"
+
+
+class ARRAY(_ARRAY):
+    """A StarRocks ``ARRAY`` type that can be used as a bind parameter.
+
+    The ``starrocks`` dialect does not implement bind handling for structured
+    types, so the DBAPI driver falls back to escaping Python lists as SQL
+    tuples (e.g. ``('a', 'b')``), which is not valid syntax for an ``ARRAY``
+    literal. Instead, values are JSON-encoded and cast to the target array
+    type at bind time.
+    """
+
+    @override
+    def bind_processor(self, dialect: Dialect) -> _BindProcessorType[Any]:
+        """Encode Python lists as JSON strings for binding."""
+
+        def process(value: list[Any] | None) -> str | None:
+            return None if value is None else json.dumps(value)
+
+        return process
+
+    @override
+    def bind_expression(self, bindvalue: ColumnElement[Any]) -> ColumnElement[Any]:
+        """Cast the JSON-encoded bind parameter to the array type."""
+        return _ArrayCast(bindvalue, self)
 
 
 class JSONSchemaToStarRocks(JSONSchemaToSQL):

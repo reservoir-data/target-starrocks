@@ -13,7 +13,7 @@ from singer_sdk.sql.connector import FullyQualifiedName, JSONSchemaToSQL, SQLCon
 from singer_sdk.sql.sink import SQLSink
 from sqlalchemy.sql import ddl
 from sqlalchemy.util import immutabledict
-from starrocks.datatype import JSON
+from starrocks.datatype import ARRAY, JSON
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -67,7 +67,7 @@ class StarRocksConnector(SQLConnector):
         to_sql = JSONSchemaToStarRocks(max_varchar_length=self.max_varchar_length)
         to_sql.register_format_handler("time", sa.types.VARCHAR)
         to_sql.register_format_handler("uuid", lambda _: sa.types.CHAR(36))
-        to_sql.register_type_handler("array", JSON)
+        to_sql.register_type_handler("array", ARRAY)
         to_sql.register_type_handler("object", JSON)
         return to_sql
 

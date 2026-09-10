@@ -40,6 +40,12 @@ class JSONSchemaToStarRocks(JSONSchemaToSQL):
 
         return sa.types.VARCHAR(length=max_length or self._max_varchar_length)
 
+    def convert_array_schema(self, schema: dict[str, Any]) -> sa.types.TypeEngine:
+        """Convert array schema to ARRAY type."""
+        if items := schema.get("items"):
+            ARRAY(self.to_sql_type(items))
+        return sa.types.VARCHAR()
+
 
 class StarRocksConnector(SQLConnector):
     """The connector for StarRocks.
@@ -67,7 +73,7 @@ class StarRocksConnector(SQLConnector):
         to_sql = JSONSchemaToStarRocks(max_varchar_length=self.max_varchar_length)
         to_sql.register_format_handler("time", sa.types.VARCHAR)
         to_sql.register_format_handler("uuid", lambda _: sa.types.CHAR(36))
-        to_sql.register_type_handler("array", ARRAY)
+        to_sql.register_type_handler("array", to_sql.convert_array_schema)
         to_sql.register_type_handler("object", JSON)
         return to_sql
 

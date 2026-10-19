@@ -124,11 +124,11 @@ class StarRocksConnector(SQLConnector):
     #: https://docs.starrocks.io/docs/sql-reference/data-types/string-type/VARCHAR/
     #: TODO: Use the database version to determine if this should be 65533 (<2.1)
     #: or 1048576 (>=2.1).
-    max_varchar_length: int = 65_533
+    max_varchar_length: int | None = 65_533
 
     @override
     @functools.cached_property
-    def jsonschema_to_sql(self) -> JSONSchemaToStarRocks:
+    def jsonschema_to_sql(self) -> JSONSchemaToSQL:
         """The JSON-to-SQL type mapper object for this SQL connector."""
         to_sql = JSONSchemaToStarRocks(max_varchar_length=self.max_varchar_length)
         to_sql.register_format_handler("time", sa.types.VARCHAR)

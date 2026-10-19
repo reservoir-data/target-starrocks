@@ -44,7 +44,7 @@ env:
 jobs:
   build-package:
     name: Build & verify package
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       supported-python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
     steps:
@@ -57,7 +57,7 @@ jobs:
 
   tests:
     name: Test
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: build-package
     env:
       STARROCKS_DATABASE: pytest
@@ -93,7 +93,7 @@ jobs:
 
   static:
     name: Static Analysis
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -113,7 +113,7 @@ jobs:
 
   pre-commit:
     name: pre-commit hooks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:

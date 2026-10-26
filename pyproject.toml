@@ -28,7 +28,7 @@ classifiers = [
 dynamic = [ "version" ]
 dependencies = [
   "singer-sdk[faker]~=0.55.0a9",
-  "sqlalchemy==2.1.4",
+  "sqlalchemy==2.1.5",
   "starrocks~=1.3.3",
 ]
 [[project.authors]]
